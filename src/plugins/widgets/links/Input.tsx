@@ -63,6 +63,7 @@ type Props = Link & {
 };
 
 const iconList = Object.keys(icons);
+const MAX_DEFAULT_SHORTCUTS = 9;
 
 const Input: FC<Props> = (props) => {
   const [urlValue, setUrlValue] = useState(props.url);
@@ -190,7 +191,7 @@ const Input: FC<Props> = (props) => {
           )}
         </div>
 
-        {props.number <= 9
+        {props.number <= MAX_DEFAULT_SHORTCUTS
           ? <FormattedMessage
               id="plugins.links.input.keyboardShortcut"
               defaultMessage="Keyboard shortcut {number}"
@@ -573,12 +574,23 @@ const Input: FC<Props> = (props) => {
       )}
 
       <label>
-        <FormattedMessage id="plugins.links.input.keyboardShortcut" defaultMessage="Keyboard shortcut {number}" values={{ number: props.number }} />
+        {props.number <= MAX_DEFAULT_SHORTCUTS ? (
+          <FormattedMessage 
+            id="plugins.links.input.keyboardShortcutCustomizable" 
+            defaultMessage="Keyboard Shortcut ({number} by default)" 
+            values={{ number: props.number }} 
+          />
+        ) : (
+          <FormattedMessage 
+            id="plugins.links.input.keyboardShortcutCustomizableNoDefault" 
+            defaultMessage="Keyboard Shortcut (optional)" 
+          />
+        )}
         <input
           type="text"
           value={props.keyboardShortcut || ""}
           onChange={(event) => props.onChange({ keyboardShortcut: event.target.value })}
-          placeholder={props.number <= 9 ? String(props.number) : ""}
+          placeholder={props.number <= MAX_DEFAULT_SHORTCUTS ? String(props.number) : ""}
           maxLength={1}
         />
       </label>
