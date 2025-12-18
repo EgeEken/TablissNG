@@ -573,7 +573,18 @@ const Input: FC<Props> = (props) => {
       )}
 
       <label>
-        <FormattedMessage id="plugins.links.input.keyboardShortcut" defaultMessage="Keyboard shortcut {number}" values={{ number: props.number }} />
+        {props.number <= 9 ? (
+          <FormattedMessage 
+            id="plugins.links.input.keyboardShortcutCustomizable" 
+            defaultMessage="Keyboard Shortcut ({number} by default)" 
+            values={{ number: props.number }} 
+          />
+        ) : (
+          <FormattedMessage 
+            id="plugins.links.input.keyboardShortcutCustomizableNoDefault" 
+            defaultMessage="Keyboard Shortcut (optional)" 
+          />
+        )}
         <input
           type="text"
           value={props.keyboardShortcut || ""}
